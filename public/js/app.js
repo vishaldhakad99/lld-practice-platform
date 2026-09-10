@@ -37,6 +37,8 @@ const state = {
 
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+
+  
   document.getElementById('view-' + id).classList.add('active');
   window.scrollTo(0, 0);
 }
@@ -54,6 +56,8 @@ function timeAgo(iso) {
   const mins = Math.floor(diff / 60000);
   if (mins < 1) return 'just now';
   if (mins < 60) return `${mins}m ago`;
+
+  
   const hrs = Math.floor(mins / 60);
   if (hrs < 24) return `${hrs}h ago`;
   return `${Math.floor(hrs / 24)}d ago`;
@@ -80,6 +84,9 @@ function renderProblems(problems) {
     </div>
   `).join('');
 
+
+
+  
   grid.querySelectorAll('.problem-card').forEach(card => {
     const open = () => openAttempt(card.dataset.id);
     card.addEventListener('click', open);
@@ -97,11 +104,15 @@ async function openAttempt(problemId) {
   db.textContent = problem.difficulty;
   db.className = `difficulty-badge ${problem.difficulty}`;
 
+  
+
   document.getElementById('prob-description').textContent = problem.description;
   document.getElementById('prob-requirements').innerHTML =
     problem.requirements.map(r => `<li>${r}</li>`).join('');
   document.getElementById('prob-hints').innerHTML =
     problem.hints.map(h => `<li>${h}</li>`).join('');
+
+  
   document.getElementById('prob-constraints').innerHTML =
     problem.constraints.map(c => `<li>${c}</li>`).join('');
 
@@ -128,6 +139,9 @@ async function openAttempt(problemId) {
 function setupEditor() {
   const editor = document.getElementById('solution-editor');
   const counter = document.getElementById('char-count');
+
+
+  
   const status = document.getElementById('editor-status');
 
   editor.addEventListener('input', () => {
@@ -150,6 +164,9 @@ async function autosaveDraft(solution, statusEl, manual = false) {
   try {
     await API.patch(`/api/attempts/${state.currentAttemptId}/draft`, { solution });
     statusEl.textContent = manual ? 'Draft saved.' : 'Draft auto-saved.';
+
+
+    
     statusEl.className = 'editor-status status-saved';
     if (manual) toast('Draft saved.');
   } catch (err) {
