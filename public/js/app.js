@@ -2,17 +2,23 @@ const API = {
   async get(path) {
     const r = await fetch(path);
     const json = await r.json();
+
+
+    
     if (!r.ok) throw new Error(json.error || 'Request failed');
     return json;
   },
   async post(path, body) {
     const r = await fetch(path, {
       method: 'POST',
+
+      
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
     const json = await r.json();
     if (!r.ok) throw new Error(json.error || 'Request failed');
+    
     return json;
   },
   async patch(path, body) {
@@ -109,6 +115,9 @@ async function openAttempt(problemId) {
   document.getElementById('prob-description').textContent = problem.description;
   document.getElementById('prob-requirements').innerHTML =
     problem.requirements.map(r => `<li>${r}</li>`).join('');
+
+
+  
   document.getElementById('prob-hints').innerHTML =
     problem.hints.map(h => `<li>${h}</li>`).join('');
 
@@ -119,6 +128,9 @@ async function openAttempt(problemId) {
   document.getElementById('solution-editor').value = '';
   document.getElementById('char-count').textContent = '0 chars';
   document.getElementById('editor-status').textContent = '';
+
+
+  
   document.getElementById('submit-btn').disabled = false;
   document.getElementById('submit-btn').innerHTML = 'Submit for Feedback';
 
@@ -146,6 +158,8 @@ function setupEditor() {
 
   editor.addEventListener('input', () => {
     counter.textContent = editor.value.length + ' chars';
+
+    
     clearTimeout(state.draftTimer);
     state.draftTimer = setTimeout(() => autosaveDraft(editor.value, status), 1800);
   });
@@ -159,6 +173,8 @@ function setupEditor() {
 
 async function autosaveDraft(solution, statusEl, manual = false) {
   if (!state.currentAttemptId) return;
+
+  
   statusEl.textContent = 'Saving...';
   statusEl.className = 'editor-status status-saving';
   try {
@@ -178,6 +194,8 @@ async function autosaveDraft(solution, statusEl, manual = false) {
 async function submitSolution() {
   const solution = document.getElementById('solution-editor').value;
   if (solution.trim().length < 50) {
+
+    
     toast('Solution must be at least 50 characters.');
     return;
   }
@@ -203,6 +221,9 @@ async function showFeedback(evaluation) {
 
   const score = evaluation.score;
   const grade = evaluation.grade;
+
+
+  
   document.getElementById('score-num').textContent = score;
   document.getElementById('score-grade').textContent = 'Grade ' + grade;
   document.getElementById('score-summary').textContent = evaluation.summary;
@@ -254,6 +275,9 @@ async function loadHistory() {
       return;
     }
     listEl.innerHTML = history.map((h, i) => {
+
+
+      
       const a = h.attempt;
       const score = h.feedback ? h.feedback.score : null;
       return `
